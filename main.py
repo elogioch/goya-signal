@@ -3,7 +3,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-# GitHub Secrets에서 안전하게 가져오는 설정
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 TARGET_URL = "https://tryex.xyz/goya_scorechart.php?kind=NEARUSDT&hour=600"
@@ -26,8 +25,8 @@ def check_signal():
             soup = BeautifulSoup(response.text, 'html.parser')
             text_data = soup.get_text()
 
-            # Signal L3(숫자H) 또는 Signal S3(숫자H) 탐색
-            matches = re.findall(r'Signal (L3|S3)\((\d+)H\)', text_data)
+            # Signal L1, L2, L3 및 S1, S2, S3 전체 탐색
+            matches = re.findall(r'Signal (L[1-3]|S[1-3])\((\d+)H\)', text_data)
 
             for signal_type, hour_str in matches:
                 hours_passed = int(hour_str)
